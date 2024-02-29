@@ -19,7 +19,7 @@
  * @param containerSelector A CSS selection indicating exactly one element in the document
  * @returns {{range: function(number, number), onChange: function(function)}}
  */
-function createD3RangeSlider (rangeMin, rangeMax, containerSelector, playButton, playingRate=100) {
+function createD3RangeSlider (rangeMin, rangeMax, containerSelector, playButton, playingRateValue) {
     "use strict";
 
     var minWidth = 10;
@@ -30,7 +30,10 @@ function createD3RangeSlider (rangeMin, rangeMax, containerSelector, playButton,
     var container = d3.select(containerSelector);
     var playing = false;
     var resumePlaying = false; // Used by drag-events to resume playing on release
-    var playingRate = playingRate;
+    var playingRate = 100;
+    if (playingRateValue != undefined) {
+        playingRate = playingRateValue;
+    }
     var containerHeight = container.node().offsetHeight;
 
     // Set up play button if requested

@@ -160,8 +160,8 @@ function createD3RangeSlider (rangeMin, rangeMax, containerSelector, playButton)
 
     // configure drag behavior for handles and slider
     var dragResizeE = d3.drag()
-        .on("start", function () {
-            d3.event.sourceEvent.stopPropagation();
+        .on("start", function (event) {
+            event.sourceEvent.stopPropagation();
             resumePlaying = playing;
             playing = false;
         })
@@ -173,8 +173,8 @@ function createD3RangeSlider (rangeMin, rangeMax, containerSelector, playButton)
                 callback({begin: sliderRange.begin, end: sliderRange.end});
             });
         })
-        .on("drag", function () {
-            var dx = d3.event.dx;
+        .on("drag", function (event) {
+            var dx = event.dx;
             if (dx == 0) return;
             var conWidth = sliderBox.node().clientWidth; //parseFloat(container.style("width"));
             var newLeft = parseInt(slider.style("left"));
@@ -185,10 +185,10 @@ function createD3RangeSlider (rangeMin, rangeMax, containerSelector, playButton)
             updateRangeFromUI();
         });
 
-    var dragResizeW = d3.drag()
-        .on("start", function () {
-            this.startX = d3.mouse(this)[0];
-            d3.event.sourceEvent.stopPropagation();
+    var dragResizeW = d3.drag(event)
+        .on("start", function (event) {
+            this.startX = d3.pointer(event, this)[0];
+            event.sourceEvent.stopPropagation();
             resumePlaying = playing;
             playing = false;
         })
@@ -200,8 +200,8 @@ function createD3RangeSlider (rangeMin, rangeMax, containerSelector, playButton)
                 callback({begin: sliderRange.begin, end: sliderRange.end});
             });
         })
-        .on("drag", function () {
-            var dx = d3.mouse(this)[0] - this.startX;
+        .on("drag", function (event) {
+            var dx = d3.pointer(event, this)[0] - this.startX;
             if (dx==0) return;
             var newLeft = parseFloat(slider.style("left")) + dx;
             var newWidth = parseFloat(slider.style("width")) - dx;
@@ -222,8 +222,8 @@ function createD3RangeSlider (rangeMin, rangeMax, containerSelector, playButton)
         });
 
     var dragMove = d3.drag()
-        .on("start", function () {
-            d3.event.sourceEvent.stopPropagation();
+        .on("start", function (event) {
+            event.sourceEvent.stopPropagation();
             resumePlaying = playing;
             playing = false;
         })
@@ -235,8 +235,8 @@ function createD3RangeSlider (rangeMin, rangeMax, containerSelector, playButton)
                 callback({begin: sliderRange.begin, end: sliderRange.end});
             });
         })
-        .on("drag", function () {
-            var dx = d3.event.dx;
+        .on("drag", function (event) {
+            var dx = event.dx;
             var conWidth = sliderBox.node().clientWidth; //parseInt(container.style("width"));
             var newLeft = parseInt(slider.style("left")) + dx;
             var newWidth = parseInt(slider.style("width"));
@@ -254,7 +254,7 @@ function createD3RangeSlider (rangeMin, rangeMax, containerSelector, playButton)
 
     //Click on bar
     sliderBox.on("mousedown", function (ev) {
-        var x = d3.mouse(sliderBox.node())[0];
+        var x = d3.pointer(event, this)[0];
         var props = {};
         var sliderWidth = parseFloat(slider.style("width"));
         var conWidth = sliderBox.node().clientWidth; //parseFloat(container.style("width"));
